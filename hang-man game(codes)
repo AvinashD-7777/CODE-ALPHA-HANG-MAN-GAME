@@ -1,0 +1,57 @@
+import random
+
+# List of five predefined words
+words = ["python", "computer", "program", "keyboard", "hangman"]
+
+# Select a random word
+secret_word = random.choice(words)
+
+# Game settings
+max_incorrect_guesses = 6
+incorrect_guesses = 0
+guessed_letters = []
+
+# Create the hidden version of the word
+hidden_word = ["_"] * len(secret_word)
+
+print("Welcome to Hangman!")
+print("Guess the word one letter at a time.")
+print("You have", max_incorrect_guesses, "incorrect guesses.")
+
+# Main game loop
+while incorrect_guesses < max_incorrect_guesses and "_" in hidden_word:
+    print("\nWord:", " ".join(hidden_word))
+    print("Incorrect guesses left:", max_incorrect_guesses - incorrect_guesses)
+    print("Guessed letters:", guessed_letters)
+
+    guess = input("Enter a letter: ").lower()
+
+    # Check that the input is a single letter
+    if len(guess) != 1 or not guess.isalpha():
+        print("Please enter one letter only.")
+        continue
+
+    # Check whether the letter was already guessed
+    if guess in guessed_letters:
+        print("You already guessed that letter.")
+        continue
+
+    guessed_letters.append(guess)
+
+    # Check whether the guess is in the secret word
+    if guess in secret_word:
+        print("Correct guess!")
+
+        for index in range(len(secret_word)):
+            if secret_word[index] == guess:
+                hidden_word[index] = guess
+    else:
+        incorrect_guesses += 1
+        print("Incorrect guess!")
+
+# Display the result
+if "_" not in hidden_word:
+    print("\nCongratulations! You guessed the word:", secret_word)
+else:
+    print("\nGame over!")
+    print("The word was:", secret_word)
